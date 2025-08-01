@@ -115,7 +115,8 @@
       :class="[
         'mobile-content transition-all duration-300 ease-out',
         isHeaderVisible ? 'pt-16' : 'pt-0',
-        isMenuOpen ? 'pointer-events-none' : ''
+        isMenuOpen ? 'pointer-events-none' : '',
+        'pb-20' // Add bottom padding for bottom navigation
       ]"
       :style="{ paddingTop: headerHeight + 'px' }"
     >
@@ -123,6 +124,9 @@
         <slot />
       </div>
     </main>
+
+    <!-- Bottom Navigation -->
+    <BottomNavigation :badges="navigationBadges" />
   </div>
 </template>
 
@@ -132,6 +136,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useToast } from 'vue-toastification'
 import MobileHeader from '../components/layout/MobileHeader.vue'
+import BottomNavigation from '../components/navigation/BottomNavigation.vue'
 
 // Composables
 const router = useRouter()
@@ -144,6 +149,9 @@ const isMenuOpen = ref(false)
 const isHeaderVisible = ref(true)
 const lastScrollY = ref(0)
 const headerHeight = ref(64) // Default header height in pixels
+
+// Bottom navigation badges - can be updated by stores or external logic
+const navigationBadges = ref<Record<string, number>>({})
 
 // Computed
 const currentRoute = computed(() => route.name as string)

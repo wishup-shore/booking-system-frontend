@@ -7,6 +7,8 @@ import ClientsView from '../views/ClientsView.vue'
 import BookingsView from '../views/BookingsView.vue'
 import InventoryView from '../views/InventoryView.vue'
 import CustomItemsView from '../views/CustomItemsView.vue'
+import CalendarView from '../views/CalendarView.vue'
+import MoreView from '../views/MoreView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,9 +58,25 @@ const router = createRouter({
       },
     },
     {
+      path: '/calendar',
+      name: 'calendar',
+      component: CalendarView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: '/inventory',
       name: 'inventory',
       component: InventoryView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/more',
+      name: 'more',
+      component: MoreView,
       meta: {
         requiresAuth: true,
       },
