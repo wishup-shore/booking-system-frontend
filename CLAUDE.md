@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Install dependencies
 bun install
 
-# Development server with hot reload
+# Development server with hot reload (IMPORTANT: DO NOT USE THIS, JUST TYPE CHECKS AND BUILS)
 bun dev
 
 # Production build with type checking
@@ -68,11 +68,13 @@ This is a booking system frontend for accommodation management with authenticati
 ### Data Flow Architecture
 
 **Three-Layer Architecture:**
+
 1. **Services Layer** (`src/services/`) - Direct API communication with OpenAPI endpoints
 2. **Store Layer** (`src/stores/`) - Pinia stores that consume services and manage state
 3. **Component Layer** (`src/views/`, `src/components/`) - Vue components that use stores via composables
 
 **Key Stores:**
+
 - `auth.ts` - Authentication and user management
 - `bookings.ts` - Complete booking lifecycle (creation, calendar, availability, payments)
 - `clients.ts` - Client management with search, pagination, and groups
@@ -82,6 +84,7 @@ This is a booking system frontend for accommodation management with authenticati
 ### Composables Pattern
 
 **Core Composables:**
+
 - `useErrorHandler` - Centralized error handling with user-friendly messages
 - `useAvailability` - Real-time accommodation availability checking
 - `useCalendar` - Calendar state management and navigation
@@ -91,6 +94,7 @@ This is a booking system frontend for accommodation management with authenticati
 ### Booking System Features
 
 **Complete Booking Lifecycle:**
+
 - Create bookings with availability validation
 - Open-dates bookings for flexible scheduling
 - Check-in/check-out processes with custom data
@@ -99,6 +103,7 @@ This is a booking system frontend for accommodation management with authenticati
 - Calendar integration with events and statistics
 
 **Real-time Features:**
+
 - Availability checking during booking creation
 - Calendar events with occupancy statistics
 - Live dashboard metrics
@@ -107,6 +112,7 @@ This is a booking system frontend for accommodation management with authenticati
 ### Error Handling
 
 **Comprehensive Error System:**
+
 - Centralized error handling via `useErrorHandler` composable
 - API error transformation with user-friendly messages
 - Validation error parsing from 422 responses
@@ -132,12 +138,14 @@ This is a booking system frontend for accommodation management with authenticati
 ### OpenAPI Integration
 
 The system is fully integrated with the backend OpenAPI specification:
+
 - All service methods match OpenAPI endpoints exactly
 - TypeScript types generated from API schemas
 - Complete CRUD operations for all entities
 - Advanced features like calendar statistics, availability checking, and booking workflows
 
 **Key Integration Points:**
+
 - Authentication with login/registration
 - Real-time availability checking in booking flows
 - Calendar integration with occupancy statistics

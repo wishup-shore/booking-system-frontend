@@ -1,0 +1,3799 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Booking System API",
+    "description": "Booking system for accommodations",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["authentication"],
+        "summary": "Login",
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Token" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": ["authentication"],
+        "summary": "Register",
+        "operationId": "register_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UserCreate" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserRegistrationResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": ["authentication"],
+        "summary": "Get Current User Info",
+        "operationId": "get_current_user_info_api_v1_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CurrentUserResponse" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/api/v1/accommodation-types/": {
+      "get": {
+        "tags": ["accommodation-types"],
+        "summary": "Get Accommodation Types",
+        "operationId": "get_accommodation_types_api_v1_accommodation_types__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/AccommodationType" },
+                  "type": "array",
+                  "title": "Response Get Accommodation Types Api V1 Accommodation Types  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "post": {
+        "tags": ["accommodation-types"],
+        "summary": "Create Accommodation Type",
+        "operationId": "create_accommodation_type_api_v1_accommodation_types__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AccommodationTypeCreate" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/AccommodationType" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/api/v1/accommodation-types/{accommodation_type_id}": {
+      "put": {
+        "tags": ["accommodation-types"],
+        "summary": "Update Accommodation Type",
+        "operationId": "update_accommodation_type_api_v1_accommodation_types__accommodation_type_id__put",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "accommodation_type_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Accommodation Type Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AccommodationTypeUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/AccommodationType" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["accommodation-types"],
+        "summary": "Delete Accommodation Type",
+        "operationId": "delete_accommodation_type_api_v1_accommodation_types__accommodation_type_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "accommodation_type_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Accommodation Type Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accommodations/": {
+      "get": {
+        "tags": ["accommodations"],
+        "summary": "Get Accommodations",
+        "operationId": "get_accommodations_api_v1_accommodations__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/Accommodation" },
+                  "type": "array",
+                  "title": "Response Get Accommodations Api V1 Accommodations  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "post": {
+        "tags": ["accommodations"],
+        "summary": "Create Accommodation",
+        "operationId": "create_accommodation_api_v1_accommodations__post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/AccommodationCreate" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Accommodation" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/api/v1/accommodations/{accommodation_id}": {
+      "put": {
+        "tags": ["accommodations"],
+        "summary": "Update Accommodation",
+        "operationId": "update_accommodation_api_v1_accommodations__accommodation_id__put",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "accommodation_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Accommodation Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/AccommodationUpdate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Accommodation" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["accommodations"],
+        "summary": "Delete Accommodation",
+        "operationId": "delete_accommodation_api_v1_accommodations__accommodation_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "accommodation_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Accommodation Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clients/": {
+      "get": {
+        "tags": ["clients"],
+        "summary": "Get Clients",
+        "operationId": "get_clients_api_v1_clients__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0, "default": 0, "title": "Skip" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "description": "Search by name, phone, or email",
+              "title": "Search"
+            },
+            "description": "Search by name, phone, or email"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Client" },
+                  "title": "Response Get Clients Api V1 Clients  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["clients"],
+        "summary": "Create Client",
+        "operationId": "create_client_api_v1_clients__post",
+        "security": [{ "HTTPBearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/ClientCreate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Client" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clients/{client_id}": {
+      "get": {
+        "tags": ["clients"],
+        "summary": "Get Client",
+        "operationId": "get_client_api_v1_clients__client_id__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Client Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Client" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["clients"],
+        "summary": "Update Client",
+        "operationId": "update_client_api_v1_clients__client_id__put",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Client Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/ClientUpdate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Client" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["clients"],
+        "summary": "Delete Client",
+        "operationId": "delete_client_api_v1_clients__client_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Client Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clients/{client_id}/stats": {
+      "get": {
+        "tags": ["clients"],
+        "summary": "Get Client Stats",
+        "operationId": "get_client_stats_api_v1_clients__client_id__stats_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Client Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ClientWithStats" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clients/groups/": {
+      "get": {
+        "tags": ["clients"],
+        "summary": "Get Client Groups",
+        "operationId": "get_client_groups_api_v1_clients_groups__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/ClientGroup" },
+                  "type": "array",
+                  "title": "Response Get Client Groups Api V1 Clients Groups  Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
+      "post": {
+        "tags": ["clients"],
+        "summary": "Create Client Group",
+        "operationId": "create_client_group_api_v1_clients_groups__post",
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/ClientGroupCreate" } }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ClientGroup" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/api/v1/clients/groups/{group_id}": {
+      "get": {
+        "tags": ["clients"],
+        "summary": "Get Client Group",
+        "operationId": "get_client_group_api_v1_clients_groups__group_id__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Group Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ClientGroup" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["clients"],
+        "summary": "Update Client Group",
+        "operationId": "update_client_group_api_v1_clients_groups__group_id__put",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Group Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/ClientGroupUpdate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ClientGroup" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["clients"],
+        "summary": "Delete Client Group",
+        "operationId": "delete_client_group_api_v1_clients_groups__group_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Group Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Get Bookings",
+        "description": "Get list of bookings with optional status filter",
+        "operationId": "get_bookings_api_v1_bookings__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0, "default": 0, "title": "Skip" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "$ref": "#/components/schemas/BookingStatus" }, { "type": "null" }],
+              "description": "Filter by booking status",
+              "title": "Status"
+            },
+            "description": "Filter by booking status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Booking" },
+                  "title": "Response Get Bookings Api V1 Bookings  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Create Booking",
+        "description": "Create a new booking",
+        "operationId": "create_booking_api_v1_bookings__post",
+        "security": [{ "HTTPBearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/BookingCreate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Booking" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/{booking_id}": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Get Booking",
+        "description": "Get booking details with client and accommodation information",
+        "operationId": "get_booking_api_v1_bookings__booking_id__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BookingWithDetails" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["bookings"],
+        "summary": "Update Booking",
+        "description": "Update booking details",
+        "operationId": "update_booking_api_v1_bookings__booking_id__put",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/BookingUpdate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Booking" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["bookings"],
+        "summary": "Delete Booking",
+        "description": "Delete booking (only if not checked-in or completed)",
+        "operationId": "delete_booking_api_v1_bookings__booking_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/open-dates": {
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Create Open Dates Booking",
+        "description": "Create booking with open dates (flexible dates)",
+        "operationId": "create_open_dates_booking_api_v1_bookings_open_dates_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BookingCreateOpenDates" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Booking" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/api/v1/bookings/open": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Get Open Dates Bookings",
+        "description": "Get all open-dates bookings for planning",
+        "operationId": "get_open_dates_bookings_api_v1_bookings_open_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0, "default": 0, "title": "Skip" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Booking" },
+                  "title": "Response Get Open Dates Bookings Api V1 Bookings Open Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/{booking_id}/set-dates": {
+      "put": {
+        "tags": ["bookings"],
+        "summary": "Set Booking Dates",
+        "description": "Set dates for an open-dates booking",
+        "operationId": "set_booking_dates_api_v1_bookings__booking_id__set_dates_put",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/BookingSetDates" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Booking" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/{booking_id}/checkin": {
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Checkin Booking",
+        "description": "Process check-in for a booking",
+        "operationId": "checkin_booking_api_v1_bookings__booking_id__checkin_post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/BookingCheckIn" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Booking" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/{booking_id}/checkout": {
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Checkout Booking",
+        "description": "Process check-out for a booking",
+        "operationId": "checkout_booking_api_v1_bookings__booking_id__checkout_post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/BookingCheckOut" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Booking" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/{booking_id}/cancel": {
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Cancel Booking",
+        "description": "Cancel a booking",
+        "operationId": "cancel_booking_api_v1_bookings__booking_id__cancel_post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          },
+          {
+            "name": "reason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "description": "Cancellation reason",
+              "title": "Reason"
+            },
+            "description": "Cancellation reason"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Booking" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/{booking_id}/payment": {
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Add Payment",
+        "description": "Add payment to booking",
+        "operationId": "add_payment_api_v1_bookings__booking_id__payment_post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/BookingPayment" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Booking" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/calendar/occupancy": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Get Calendar Occupancy",
+        "description": "Get calendar occupancy data for date range",
+        "operationId": "get_calendar_occupancy_api_v1_bookings_calendar_occupancy_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "Start date (YYYY-MM-DD)",
+              "title": "Start Date"
+            },
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "End date (YYYY-MM-DD)",
+              "title": "End Date"
+            },
+            "description": "End date (YYYY-MM-DD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CalendarOccupancy" },
+                  "title": "Response Get Calendar Occupancy Api V1 Bookings Calendar Occupancy Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/calendar/events": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Get Calendar Events",
+        "description": "Get calendar events (bookings) for calendar display",
+        "operationId": "get_calendar_events_api_v1_bookings_calendar_events_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "Start date (YYYY-MM-DD)",
+              "title": "Start Date"
+            },
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "End date (YYYY-MM-DD)",
+              "title": "End Date"
+            },
+            "description": "End date (YYYY-MM-DD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CalendarEvent" },
+                  "title": "Response Get Calendar Events Api V1 Bookings Calendar Events Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/calendar/occupancy/{year}/{month}": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Get Monthly Occupancy",
+        "description": "Get calendar occupancy for a specific month",
+        "operationId": "get_monthly_occupancy_api_v1_bookings_calendar_occupancy__year___month__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 2030,
+              "minimum": 2020,
+              "description": "Year",
+              "title": "Year"
+            },
+            "description": "Year"
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 12,
+              "minimum": 1,
+              "description": "Month (1-12)",
+              "title": "Month"
+            },
+            "description": "Month (1-12)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CalendarOccupancy" },
+                  "title": "Response Get Monthly Occupancy Api V1 Bookings Calendar Occupancy  Year   Month  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/calendar/statistics": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Get Occupancy Statistics",
+        "description": "Get occupancy statistics for date range",
+        "operationId": "get_occupancy_statistics_api_v1_bookings_calendar_statistics_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "Start date (YYYY-MM-DD)",
+              "title": "Start Date"
+            },
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "End date (YYYY-MM-DD)",
+              "title": "End Date"
+            },
+            "description": "End date (YYYY-MM-DD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CalendarStatistics" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/availability/accommodations": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Get Available Accommodations",
+        "description": "Get available accommodations for given dates",
+        "operationId": "get_available_accommodations_api_v1_bookings_availability_accommodations_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "Check-in date (YYYY-MM-DD)",
+              "title": "Start Date"
+            },
+            "description": "Check-in date (YYYY-MM-DD)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "Check-out date (YYYY-MM-DD)",
+              "title": "End Date"
+            },
+            "description": "Check-out date (YYYY-MM-DD)"
+          },
+          {
+            "name": "capacity",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "integer", "minimum": 1 }, { "type": "null" }],
+              "description": "Minimum capacity needed",
+              "title": "Capacity"
+            },
+            "description": "Minimum capacity needed"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/AvailableAccommodation" },
+                  "title": "Response Get Available Accommodations Api V1 Bookings Availability Accommodations Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/availability/check": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Check Accommodation Availability",
+        "description": "Check if specific accommodation is available for given dates",
+        "operationId": "check_accommodation_availability_api_v1_bookings_availability_check_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "accommodation_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "Accommodation ID",
+              "title": "Accommodation Id"
+            },
+            "description": "Accommodation ID"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "Check-in date (YYYY-MM-DD)",
+              "title": "Start Date"
+            },
+            "description": "Check-in date (YYYY-MM-DD)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "Check-out date (YYYY-MM-DD)",
+              "title": "End Date"
+            },
+            "description": "Check-out date (YYYY-MM-DD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AccommodationAvailabilityResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/with-items": {
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Create Booking With Items",
+        "description": "Create a new booking with inventory and custom items",
+        "operationId": "create_booking_with_items_api_v1_bookings_with_items_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BookingCreateWithItems" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Booking" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/api/v1/bookings/open-dates/with-items": {
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Create Open Dates Booking With Items",
+        "description": "Create open-dates booking with inventory and custom items",
+        "operationId": "create_open_dates_booking_with_items_api_v1_bookings_open_dates_with_items_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BookingCreateOpenDatesWithItems" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Booking" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/api/v1/bookings/{booking_id}/with-items": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Get Booking With Items",
+        "description": "Get booking with inventory and custom items",
+        "operationId": "get_booking_with_items_api_v1_bookings__booking_id__with_items_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/BookingWithItems" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/{booking_id}/full-details": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Get Booking Full Details",
+        "description": "Get booking with all details including client, accommodation, and items",
+        "operationId": "get_booking_full_details_api_v1_bookings__booking_id__full_details_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BookingWithFullDetails" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/{booking_id}/inventory/{inventory_item_id}": {
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Add Inventory Item To Booking",
+        "description": "Add an inventory item to a booking",
+        "operationId": "add_inventory_item_to_booking_api_v1_bookings__booking_id__inventory__inventory_item_id__post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          },
+          {
+            "name": "inventory_item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Inventory Item Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BookingActionResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["bookings"],
+        "summary": "Remove Inventory Item From Booking",
+        "description": "Remove an inventory item from a booking",
+        "operationId": "remove_inventory_item_from_booking_api_v1_bookings__booking_id__inventory__inventory_item_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          },
+          {
+            "name": "inventory_item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Inventory Item Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BookingActionResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/{booking_id}/custom-items/{custom_item_id}": {
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Add Custom Item To Booking",
+        "description": "Add a custom item to a booking",
+        "operationId": "add_custom_item_to_booking_api_v1_bookings__booking_id__custom_items__custom_item_id__post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Id" }
+          },
+          {
+            "name": "custom_item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Custom Item Id" }
+          },
+          {
+            "name": "quantity",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "description": "Quantity of the custom item",
+              "default": 1,
+              "title": "Quantity"
+            },
+            "description": "Quantity of the custom item"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BookingActionResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/custom-items/{booking_custom_item_id}": {
+      "delete": {
+        "tags": ["bookings"],
+        "summary": "Remove Custom Item From Booking",
+        "description": "Remove a custom item from a booking",
+        "operationId": "remove_custom_item_from_booking_api_v1_bookings_custom_items__booking_custom_item_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "booking_custom_item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Booking Custom Item Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BookingActionResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory-types/": {
+      "post": {
+        "tags": ["inventory-types"],
+        "summary": "Create Inventory Type",
+        "description": "Create a new inventory type",
+        "operationId": "create_inventory_type_api_v1_inventory_types__post",
+        "security": [{ "HTTPBearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/InventoryTypeCreate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/InventoryType" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["inventory-types"],
+        "summary": "Get Inventory Types",
+        "description": "Get list of inventory types",
+        "operationId": "get_inventory_types_api_v1_inventory_types__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0, "default": 0, "title": "Skip" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "active_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Filter active types only",
+              "default": true,
+              "title": "Active Only"
+            },
+            "description": "Filter active types only"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/InventoryType" },
+                  "title": "Response Get Inventory Types Api V1 Inventory Types  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory-types/{inventory_type_id}": {
+      "get": {
+        "tags": ["inventory-types"],
+        "summary": "Get Inventory Type",
+        "description": "Get inventory type by ID",
+        "operationId": "get_inventory_type_api_v1_inventory_types__inventory_type_id__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "inventory_type_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Inventory Type Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/InventoryType" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["inventory-types"],
+        "summary": "Update Inventory Type",
+        "description": "Update inventory type",
+        "operationId": "update_inventory_type_api_v1_inventory_types__inventory_type_id__put",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "inventory_type_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Inventory Type Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/InventoryTypeUpdate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/InventoryType" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["inventory-types"],
+        "summary": "Delete Inventory Type",
+        "description": "Delete inventory type",
+        "operationId": "delete_inventory_type_api_v1_inventory_types__inventory_type_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "inventory_type_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Inventory Type Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory-items/": {
+      "post": {
+        "tags": ["inventory-items"],
+        "summary": "Create Inventory Item",
+        "description": "Create a new inventory item",
+        "operationId": "create_inventory_item_api_v1_inventory_items__post",
+        "security": [{ "HTTPBearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/InventoryItemCreate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/InventoryItem" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["inventory-items"],
+        "summary": "Get Inventory Items",
+        "description": "Get list of inventory items",
+        "operationId": "get_inventory_items_api_v1_inventory_items__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0, "default": 0, "title": "Skip" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "type_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "integer" }, { "type": "null" }],
+              "description": "Filter by inventory type ID",
+              "title": "Type Id"
+            },
+            "description": "Filter by inventory type ID"
+          },
+          {
+            "name": "available_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Filter available items only",
+              "default": false,
+              "title": "Available Only"
+            },
+            "description": "Filter available items only"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/InventoryItemWithType" },
+                  "title": "Response Get Inventory Items Api V1 Inventory Items  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory-items/{inventory_item_id}": {
+      "get": {
+        "tags": ["inventory-items"],
+        "summary": "Get Inventory Item",
+        "description": "Get inventory item by ID",
+        "operationId": "get_inventory_item_api_v1_inventory_items__inventory_item_id__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "inventory_item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Inventory Item Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InventoryItemWithType" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["inventory-items"],
+        "summary": "Update Inventory Item",
+        "description": "Update inventory item",
+        "operationId": "update_inventory_item_api_v1_inventory_items__inventory_item_id__put",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "inventory_item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Inventory Item Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/InventoryItemUpdate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/InventoryItem" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["inventory-items"],
+        "summary": "Delete Inventory Item",
+        "description": "Delete inventory item",
+        "operationId": "delete_inventory_item_api_v1_inventory_items__inventory_item_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "inventory_item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Inventory Item Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory-items/by-type/{type_id}/available": {
+      "get": {
+        "tags": ["inventory-items"],
+        "summary": "Get Available Items By Type",
+        "description": "Get available inventory items of a specific type",
+        "operationId": "get_available_items_by_type_api_v1_inventory_items_by_type__type_id__available_get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "type_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Type Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/InventoryItemWithType" },
+                  "title": "Response Get Available Items By Type Api V1 Inventory Items By Type  Type Id  Available Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/custom-items/": {
+      "post": {
+        "tags": ["custom-items"],
+        "summary": "Create Custom Item",
+        "description": "Create a new custom item/service",
+        "operationId": "create_custom_item_api_v1_custom_items__post",
+        "security": [{ "HTTPBearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CustomItemCreate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/CustomItem" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["custom-items"],
+        "summary": "Get Custom Items",
+        "description": "Get list of custom items/services",
+        "operationId": "get_custom_items_api_v1_custom_items__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "minimum": 0, "default": 0, "title": "Skip" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "active_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Filter active items only",
+              "default": true,
+              "title": "Active Only"
+            },
+            "description": "Filter active items only"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CustomItem" },
+                  "title": "Response Get Custom Items Api V1 Custom Items  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/custom-items/{custom_item_id}": {
+      "get": {
+        "tags": ["custom-items"],
+        "summary": "Get Custom Item",
+        "description": "Get custom item by ID",
+        "operationId": "get_custom_item_api_v1_custom_items__custom_item_id__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "custom_item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Custom Item Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/CustomItem" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["custom-items"],
+        "summary": "Update Custom Item",
+        "description": "Update custom item",
+        "operationId": "update_custom_item_api_v1_custom_items__custom_item_id__put",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "custom_item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Custom Item Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CustomItemUpdate" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/CustomItem" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["custom-items"],
+        "summary": "Delete Custom Item",
+        "description": "Delete custom item",
+        "operationId": "delete_custom_item_api_v1_custom_items__custom_item_id__delete",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "custom_item_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Custom Item Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/MessageResponse" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Read Root",
+        "operationId": "read_root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Accommodation": {
+        "properties": {
+          "number": { "type": "string", "title": "Number" },
+          "type_id": { "type": "integer", "title": "Type Id" },
+          "capacity": { "type": "integer", "title": "Capacity" },
+          "price_per_night": {
+            "type": "string",
+            "title": "Price Per Night",
+            "description": "Price per night must be non-negative"
+          },
+          "status": { "$ref": "#/components/schemas/AccommodationStatus", "default": "available" },
+          "condition": { "$ref": "#/components/schemas/AccommodationCondition", "default": "ok" },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "id": { "type": "integer", "title": "Id" },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" },
+          "type": { "$ref": "#/components/schemas/AccommodationType" }
+        },
+        "type": "object",
+        "required": [
+          "number",
+          "type_id",
+          "capacity",
+          "price_per_night",
+          "id",
+          "created_at",
+          "type"
+        ],
+        "title": "Accommodation"
+      },
+      "AccommodationAvailabilityResponse": {
+        "properties": {
+          "accommodation_id": {
+            "type": "integer",
+            "title": "Accommodation Id",
+            "description": "ID of the accommodation being checked",
+            "example": 5
+          },
+          "start_date": {
+            "type": "string",
+            "title": "Start Date",
+            "description": "Check-in date in ISO format (YYYY-MM-DD)",
+            "example": "2025-12-15"
+          },
+          "end_date": {
+            "type": "string",
+            "title": "End Date",
+            "description": "Check-out date in ISO format (YYYY-MM-DD)",
+            "example": "2025-12-18"
+          },
+          "is_available": {
+            "type": "boolean",
+            "title": "Is Available",
+            "description": "Whether the accommodation is available for the specified dates",
+            "example": true
+          }
+        },
+        "type": "object",
+        "required": ["accommodation_id", "start_date", "end_date", "is_available"],
+        "title": "AccommodationAvailabilityResponse",
+        "description": "Response schema for accommodation availability check."
+      },
+      "AccommodationCondition": {
+        "type": "string",
+        "enum": ["ok", "minor", "critical"],
+        "title": "AccommodationCondition"
+      },
+      "AccommodationCreate": {
+        "properties": {
+          "number": { "type": "string", "title": "Number" },
+          "type_id": { "type": "integer", "title": "Type Id" },
+          "capacity": { "type": "integer", "title": "Capacity" },
+          "price_per_night": {
+            "anyOf": [{ "type": "number", "minimum": 0.0 }, { "type": "string" }],
+            "title": "Price Per Night",
+            "description": "Price per night must be non-negative"
+          },
+          "status": { "$ref": "#/components/schemas/AccommodationStatus", "default": "available" },
+          "condition": { "$ref": "#/components/schemas/AccommodationCondition", "default": "ok" },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" }
+        },
+        "type": "object",
+        "required": ["number", "type_id", "capacity", "price_per_night"],
+        "title": "AccommodationCreate"
+      },
+      "AccommodationStatus": {
+        "type": "string",
+        "enum": ["available", "occupied", "maintenance", "out_of_order"],
+        "title": "AccommodationStatus"
+      },
+      "AccommodationType": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "default_capacity": { "type": "integer", "title": "Default Capacity" },
+          "is_active": { "type": "boolean", "title": "Is Active", "default": true },
+          "id": { "type": "integer", "title": "Id" },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" }
+        },
+        "type": "object",
+        "required": ["name", "default_capacity", "id", "created_at"],
+        "title": "AccommodationType"
+      },
+      "AccommodationTypeCreate": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "default_capacity": { "type": "integer", "title": "Default Capacity" },
+          "is_active": { "type": "boolean", "title": "Is Active", "default": true }
+        },
+        "type": "object",
+        "required": ["name", "default_capacity"],
+        "title": "AccommodationTypeCreate"
+      },
+      "AccommodationTypeUpdate": {
+        "properties": {
+          "name": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Name" },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "default_capacity": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Default Capacity"
+          },
+          "is_active": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Is Active"
+          }
+        },
+        "type": "object",
+        "title": "AccommodationTypeUpdate"
+      },
+      "AccommodationUpdate": {
+        "properties": {
+          "number": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Number" },
+          "type_id": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Type Id" },
+          "capacity": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Capacity" },
+          "price_per_night": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              { "type": "string" },
+              { "type": "null" }
+            ],
+            "title": "Price Per Night",
+            "description": "Price per night must be non-negative"
+          },
+          "status": {
+            "anyOf": [{ "$ref": "#/components/schemas/AccommodationStatus" }, { "type": "null" }]
+          },
+          "condition": {
+            "anyOf": [{ "$ref": "#/components/schemas/AccommodationCondition" }, { "type": "null" }]
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" }
+        },
+        "type": "object",
+        "title": "AccommodationUpdate"
+      },
+      "AvailableAccommodation": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Accommodation ID",
+            "example": 1
+          },
+          "number": {
+            "type": "string",
+            "title": "Number",
+            "description": "Room/accommodation number",
+            "example": "101"
+          },
+          "type_name": {
+            "type": "string",
+            "title": "Type Name",
+            "description": "Type of accommodation (e.g., Standard Room, Suite)",
+            "example": "Standard Room"
+          },
+          "capacity": {
+            "type": "integer",
+            "title": "Capacity",
+            "description": "Maximum number of guests",
+            "example": 2
+          },
+          "price_per_night": {
+            "type": "string",
+            "title": "Price Per Night",
+            "description": "Price per night in local currency",
+            "example": 150.0
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Current accommodation status",
+            "example": "available"
+          }
+        },
+        "type": "object",
+        "required": ["id", "number", "type_name", "capacity", "price_per_night", "status"],
+        "title": "AvailableAccommodation",
+        "description": "Schema for available accommodation information."
+      },
+      "Booking": {
+        "properties": {
+          "client_id": { "type": "integer", "title": "Client Id" },
+          "accommodation_id": { "type": "integer", "title": "Accommodation Id" },
+          "check_in_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check In Date"
+          },
+          "check_out_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check Out Date"
+          },
+          "is_open_dates": { "type": "boolean", "title": "Is Open Dates", "default": false },
+          "guests_count": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Guests Count",
+            "description": "Number of guests must be greater than 0"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "id": { "type": "integer", "title": "Id" },
+          "status": { "$ref": "#/components/schemas/BookingStatus" },
+          "payment_status": { "$ref": "#/components/schemas/PaymentStatus" },
+          "total_amount": { "type": "string", "title": "Total Amount" },
+          "paid_amount": { "type": "string", "title": "Paid Amount" },
+          "actual_check_in": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Actual Check In"
+          },
+          "actual_check_out": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Actual Check Out"
+          },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "accommodation_id",
+          "guests_count",
+          "id",
+          "status",
+          "payment_status",
+          "total_amount",
+          "paid_amount",
+          "created_at"
+        ],
+        "title": "Booking"
+      },
+      "BookingActionResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Success message describing the action performed",
+            "examples": [
+              "Inventory item added to booking successfully",
+              "Custom item removed from booking successfully"
+            ]
+          },
+          "booking_id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Booking Id",
+            "description": "ID of the affected booking",
+            "example": 123
+          },
+          "item_id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Item Id",
+            "description": "ID of the affected item",
+            "example": 456
+          }
+        },
+        "type": "object",
+        "required": ["message"],
+        "title": "BookingActionResponse",
+        "description": "Response schema for booking-related actions (add/remove items)."
+      },
+      "BookingCheckIn": {
+        "properties": {
+          "actual_check_in": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Actual Check In"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" }
+        },
+        "type": "object",
+        "title": "BookingCheckIn",
+        "description": "Schema for check-in process"
+      },
+      "BookingCheckOut": {
+        "properties": {
+          "actual_check_out": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Actual Check Out"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" }
+        },
+        "type": "object",
+        "title": "BookingCheckOut",
+        "description": "Schema for check-out process"
+      },
+      "BookingCreate": {
+        "properties": {
+          "client_id": { "type": "integer", "title": "Client Id" },
+          "accommodation_id": { "type": "integer", "title": "Accommodation Id" },
+          "check_in_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check In Date"
+          },
+          "check_out_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check Out Date"
+          },
+          "is_open_dates": { "type": "boolean", "title": "Is Open Dates", "default": false },
+          "guests_count": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Guests Count",
+            "description": "Number of guests must be greater than 0"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" }
+        },
+        "type": "object",
+        "required": ["client_id", "accommodation_id", "guests_count"],
+        "title": "BookingCreate"
+      },
+      "BookingCreateOpenDates": {
+        "properties": {
+          "client_id": { "type": "integer", "title": "Client Id" },
+          "accommodation_id": { "type": "integer", "title": "Accommodation Id" },
+          "guests_count": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Guests Count",
+            "description": "Number of guests must be greater than 0"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "is_open_dates": { "type": "boolean", "title": "Is Open Dates", "default": true }
+        },
+        "type": "object",
+        "required": ["client_id", "accommodation_id", "guests_count"],
+        "title": "BookingCreateOpenDates",
+        "description": "Schema for creating open-dates bookings"
+      },
+      "BookingCreateOpenDatesWithItems": {
+        "properties": {
+          "client_id": { "type": "integer", "title": "Client Id" },
+          "accommodation_id": { "type": "integer", "title": "Accommodation Id" },
+          "guests_count": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Guests Count",
+            "description": "Number of guests must be greater than 0"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "is_open_dates": { "type": "boolean", "title": "Is Open Dates", "default": true },
+          "inventory_items": {
+            "items": { "$ref": "#/components/schemas/BookingInventoryItem" },
+            "type": "array",
+            "title": "Inventory Items",
+            "default": []
+          },
+          "custom_items": {
+            "items": { "$ref": "#/components/schemas/BookingCustomItemRequest" },
+            "type": "array",
+            "title": "Custom Items",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": ["client_id", "accommodation_id", "guests_count"],
+        "title": "BookingCreateOpenDatesWithItems",
+        "description": "Schema for creating open-dates bookings with inventory and custom items"
+      },
+      "BookingCreateWithItems": {
+        "properties": {
+          "client_id": { "type": "integer", "title": "Client Id" },
+          "accommodation_id": { "type": "integer", "title": "Accommodation Id" },
+          "check_in_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check In Date"
+          },
+          "check_out_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check Out Date"
+          },
+          "is_open_dates": { "type": "boolean", "title": "Is Open Dates", "default": false },
+          "guests_count": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Guests Count",
+            "description": "Number of guests must be greater than 0"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "inventory_items": {
+            "items": { "$ref": "#/components/schemas/BookingInventoryItem" },
+            "type": "array",
+            "title": "Inventory Items",
+            "default": []
+          },
+          "custom_items": {
+            "items": { "$ref": "#/components/schemas/BookingCustomItemRequest" },
+            "type": "array",
+            "title": "Custom Items",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": ["client_id", "accommodation_id", "guests_count"],
+        "title": "BookingCreateWithItems",
+        "description": "Schema for creating bookings with inventory and custom items"
+      },
+      "BookingCustomItemRequest": {
+        "properties": {
+          "custom_item_id": { "type": "integer", "title": "Custom Item Id" },
+          "quantity": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Quantity",
+            "description": "Quantity must be greater than 0"
+          }
+        },
+        "type": "object",
+        "required": ["custom_item_id", "quantity"],
+        "title": "BookingCustomItemRequest",
+        "description": "Schema for custom items to be added to booking"
+      },
+      "BookingInventoryItem": {
+        "properties": { "inventory_item_id": { "type": "integer", "title": "Inventory Item Id" } },
+        "type": "object",
+        "required": ["inventory_item_id"],
+        "title": "BookingInventoryItem",
+        "description": "Schema for inventory items to be added to booking"
+      },
+      "BookingPayment": {
+        "properties": {
+          "amount": {
+            "anyOf": [{ "type": "number", "exclusiveMinimum": 0.0 }, { "type": "string" }],
+            "title": "Amount",
+            "description": "Payment amount must be greater than 0"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" }
+        },
+        "type": "object",
+        "required": ["amount"],
+        "title": "BookingPayment",
+        "description": "Schema for recording payments"
+      },
+      "BookingSetDates": {
+        "properties": {
+          "check_in_date": { "type": "string", "format": "date", "title": "Check In Date" },
+          "check_out_date": { "type": "string", "format": "date", "title": "Check Out Date" }
+        },
+        "type": "object",
+        "required": ["check_in_date", "check_out_date"],
+        "title": "BookingSetDates",
+        "description": "Schema for setting dates on open-dates bookings"
+      },
+      "BookingStatus": {
+        "type": "string",
+        "enum": ["pending", "confirmed", "checked_in", "checked_out", "cancelled"],
+        "title": "BookingStatus"
+      },
+      "BookingUpdate": {
+        "properties": {
+          "client_id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Client Id"
+          },
+          "accommodation_id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Accommodation Id"
+          },
+          "check_in_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check In Date"
+          },
+          "check_out_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check Out Date"
+          },
+          "guests_count": {
+            "anyOf": [{ "type": "integer", "exclusiveMinimum": 0.0 }, { "type": "null" }],
+            "title": "Guests Count"
+          },
+          "status": {
+            "anyOf": [{ "$ref": "#/components/schemas/BookingStatus" }, { "type": "null" }]
+          },
+          "payment_status": {
+            "anyOf": [{ "$ref": "#/components/schemas/PaymentStatus" }, { "type": "null" }]
+          },
+          "total_amount": {
+            "anyOf": [{ "type": "number" }, { "type": "string" }, { "type": "null" }],
+            "title": "Total Amount"
+          },
+          "paid_amount": {
+            "anyOf": [{ "type": "number" }, { "type": "string" }, { "type": "null" }],
+            "title": "Paid Amount"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" }
+        },
+        "type": "object",
+        "title": "BookingUpdate"
+      },
+      "BookingWithDetails": {
+        "properties": {
+          "client_id": { "type": "integer", "title": "Client Id" },
+          "accommodation_id": { "type": "integer", "title": "Accommodation Id" },
+          "check_in_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check In Date"
+          },
+          "check_out_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check Out Date"
+          },
+          "is_open_dates": { "type": "boolean", "title": "Is Open Dates", "default": false },
+          "guests_count": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Guests Count",
+            "description": "Number of guests must be greater than 0"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "id": { "type": "integer", "title": "Id" },
+          "status": { "$ref": "#/components/schemas/BookingStatus" },
+          "payment_status": { "$ref": "#/components/schemas/PaymentStatus" },
+          "total_amount": { "type": "string", "title": "Total Amount" },
+          "paid_amount": { "type": "string", "title": "Paid Amount" },
+          "actual_check_in": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Actual Check In"
+          },
+          "actual_check_out": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Actual Check Out"
+          },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" },
+          "client": {
+            "anyOf": [{ "additionalProperties": true, "type": "object" }, { "type": "null" }],
+            "title": "Client"
+          },
+          "accommodation": {
+            "anyOf": [{ "additionalProperties": true, "type": "object" }, { "type": "null" }],
+            "title": "Accommodation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "accommodation_id",
+          "guests_count",
+          "id",
+          "status",
+          "payment_status",
+          "total_amount",
+          "paid_amount",
+          "created_at"
+        ],
+        "title": "BookingWithDetails",
+        "description": "Booking model with client and accommodation details"
+      },
+      "BookingWithFullDetails": {
+        "properties": {
+          "client_id": { "type": "integer", "title": "Client Id" },
+          "accommodation_id": { "type": "integer", "title": "Accommodation Id" },
+          "check_in_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check In Date"
+          },
+          "check_out_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check Out Date"
+          },
+          "is_open_dates": { "type": "boolean", "title": "Is Open Dates", "default": false },
+          "guests_count": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Guests Count",
+            "description": "Number of guests must be greater than 0"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "id": { "type": "integer", "title": "Id" },
+          "status": { "$ref": "#/components/schemas/BookingStatus" },
+          "payment_status": { "$ref": "#/components/schemas/PaymentStatus" },
+          "total_amount": { "type": "string", "title": "Total Amount" },
+          "paid_amount": { "type": "string", "title": "Paid Amount" },
+          "actual_check_in": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Actual Check In"
+          },
+          "actual_check_out": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Actual Check Out"
+          },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" },
+          "client": {
+            "anyOf": [{ "additionalProperties": true, "type": "object" }, { "type": "null" }],
+            "title": "Client"
+          },
+          "accommodation": {
+            "anyOf": [{ "additionalProperties": true, "type": "object" }, { "type": "null" }],
+            "title": "Accommodation"
+          },
+          "inventory_items": {
+            "items": { "additionalProperties": true, "type": "object" },
+            "type": "array",
+            "title": "Inventory Items",
+            "default": []
+          },
+          "custom_items": {
+            "items": { "additionalProperties": true, "type": "object" },
+            "type": "array",
+            "title": "Custom Items",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "accommodation_id",
+          "guests_count",
+          "id",
+          "status",
+          "payment_status",
+          "total_amount",
+          "paid_amount",
+          "created_at"
+        ],
+        "title": "BookingWithFullDetails",
+        "description": "Booking model with all details including items"
+      },
+      "BookingWithItems": {
+        "properties": {
+          "client_id": { "type": "integer", "title": "Client Id" },
+          "accommodation_id": { "type": "integer", "title": "Accommodation Id" },
+          "check_in_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check In Date"
+          },
+          "check_out_date": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Check Out Date"
+          },
+          "is_open_dates": { "type": "boolean", "title": "Is Open Dates", "default": false },
+          "guests_count": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Guests Count",
+            "description": "Number of guests must be greater than 0"
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "id": { "type": "integer", "title": "Id" },
+          "status": { "$ref": "#/components/schemas/BookingStatus" },
+          "payment_status": { "$ref": "#/components/schemas/PaymentStatus" },
+          "total_amount": { "type": "string", "title": "Total Amount" },
+          "paid_amount": { "type": "string", "title": "Paid Amount" },
+          "actual_check_in": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Actual Check In"
+          },
+          "actual_check_out": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Actual Check Out"
+          },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" },
+          "inventory_items": {
+            "items": { "additionalProperties": true, "type": "object" },
+            "type": "array",
+            "title": "Inventory Items",
+            "default": []
+          },
+          "custom_items": {
+            "items": { "additionalProperties": true, "type": "object" },
+            "type": "array",
+            "title": "Custom Items",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "accommodation_id",
+          "guests_count",
+          "id",
+          "status",
+          "payment_status",
+          "total_amount",
+          "paid_amount",
+          "created_at"
+        ],
+        "title": "BookingWithItems",
+        "description": "Booking model with inventory and custom items"
+      },
+      "CalendarEvent": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "title": { "type": "string", "title": "Title" },
+          "start": { "type": "string", "format": "date", "title": "Start" },
+          "end": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "End"
+          },
+          "accommodation_id": { "type": "integer", "title": "Accommodation Id" },
+          "accommodation_number": { "type": "string", "title": "Accommodation Number" },
+          "client_name": { "type": "string", "title": "Client Name" },
+          "status": { "$ref": "#/components/schemas/BookingStatus" },
+          "is_open_dates": { "type": "boolean", "title": "Is Open Dates" }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "start",
+          "accommodation_id",
+          "accommodation_number",
+          "client_name",
+          "status",
+          "is_open_dates"
+        ],
+        "title": "CalendarEvent",
+        "description": "Schema for calendar events/bookings"
+      },
+      "CalendarOccupancy": {
+        "properties": {
+          "date": { "type": "string", "format": "date", "title": "Date" },
+          "accommodations": {
+            "items": { "additionalProperties": true, "type": "object" },
+            "type": "array",
+            "title": "Accommodations"
+          }
+        },
+        "type": "object",
+        "required": ["date", "accommodations"],
+        "title": "CalendarOccupancy",
+        "description": "Schema for calendar occupancy data"
+      },
+      "CalendarStatistics": {
+        "properties": {
+          "total_accommodations": {
+            "type": "integer",
+            "title": "Total Accommodations",
+            "description": "Total number of accommodations",
+            "example": 50
+          },
+          "occupied_nights": {
+            "type": "integer",
+            "title": "Occupied Nights",
+            "description": "Total number of occupied accommodation-nights in the period",
+            "example": 320
+          },
+          "available_nights": {
+            "type": "integer",
+            "title": "Available Nights",
+            "description": "Total number of available accommodation-nights in the period",
+            "example": 180
+          },
+          "occupancy_rate": {
+            "type": "number",
+            "title": "Occupancy Rate",
+            "description": "Occupancy rate as a percentage (0-100)",
+            "example": 64.0
+          },
+          "total_revenue": {
+            "type": "string",
+            "title": "Total Revenue",
+            "description": "Total revenue for the period",
+            "example": 48000.0
+          },
+          "average_daily_rate": {
+            "type": "string",
+            "title": "Average Daily Rate",
+            "description": "Average daily rate (ADR) for occupied nights",
+            "example": 150.0
+          },
+          "revenue_per_available_room": {
+            "type": "string",
+            "title": "Revenue Per Available Room",
+            "description": "RevPAR (Revenue per Available Room)",
+            "example": 96.0
+          },
+          "period_start": {
+            "type": "string",
+            "title": "Period Start",
+            "description": "Start date of the statistics period (YYYY-MM-DD)",
+            "example": "2025-01-01"
+          },
+          "period_end": {
+            "type": "string",
+            "title": "Period End",
+            "description": "End date of the statistics period (YYYY-MM-DD)",
+            "example": "2025-01-31"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_accommodations",
+          "occupied_nights",
+          "available_nights",
+          "occupancy_rate",
+          "total_revenue",
+          "average_daily_rate",
+          "revenue_per_available_room",
+          "period_start",
+          "period_end"
+        ],
+        "title": "CalendarStatistics",
+        "description": "Response schema for calendar occupancy statistics."
+      },
+      "Client": {
+        "properties": {
+          "first_name": { "type": "string", "title": "First Name" },
+          "last_name": { "type": "string", "title": "Last Name" },
+          "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Phone" },
+          "email": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Email" },
+          "social_links": {
+            "anyOf": [
+              { "additionalProperties": { "type": "string" }, "type": "object" },
+              { "type": "null" }
+            ],
+            "title": "Social Links"
+          },
+          "car_numbers": {
+            "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+            "title": "Car Numbers"
+          },
+          "photo_url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Photo Url"
+          },
+          "rating": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Rating",
+            "default": 0.0
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "group_id": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Group Id" },
+          "id": { "type": "integer", "title": "Id" },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" },
+          "group": { "anyOf": [{ "$ref": "#/components/schemas/ClientGroup" }, { "type": "null" }] }
+        },
+        "type": "object",
+        "required": ["first_name", "last_name", "id", "created_at"],
+        "title": "Client"
+      },
+      "ClientCreate": {
+        "properties": {
+          "first_name": { "type": "string", "title": "First Name" },
+          "last_name": { "type": "string", "title": "Last Name" },
+          "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Phone" },
+          "email": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Email" },
+          "social_links": {
+            "anyOf": [
+              { "additionalProperties": { "type": "string" }, "type": "object" },
+              { "type": "null" }
+            ],
+            "title": "Social Links"
+          },
+          "car_numbers": {
+            "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+            "title": "Car Numbers"
+          },
+          "photo_url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Photo Url"
+          },
+          "rating": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Rating",
+            "default": 0.0
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "group_id": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Group Id" }
+        },
+        "type": "object",
+        "required": ["first_name", "last_name"],
+        "title": "ClientCreate"
+      },
+      "ClientGroup": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "id": { "type": "integer", "title": "Id" },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" }
+        },
+        "type": "object",
+        "required": ["name", "id", "created_at"],
+        "title": "ClientGroup"
+      },
+      "ClientGroupCreate": {
+        "properties": { "name": { "type": "string", "title": "Name" } },
+        "type": "object",
+        "required": ["name"],
+        "title": "ClientGroupCreate"
+      },
+      "ClientGroupUpdate": {
+        "properties": {
+          "name": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Name" }
+        },
+        "type": "object",
+        "title": "ClientGroupUpdate"
+      },
+      "ClientUpdate": {
+        "properties": {
+          "first_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Last Name"
+          },
+          "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Phone" },
+          "email": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Email" },
+          "social_links": {
+            "anyOf": [
+              { "additionalProperties": { "type": "string" }, "type": "object" },
+              { "type": "null" }
+            ],
+            "title": "Social Links"
+          },
+          "car_numbers": {
+            "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+            "title": "Car Numbers"
+          },
+          "photo_url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Photo Url"
+          },
+          "rating": { "anyOf": [{ "type": "number" }, { "type": "null" }], "title": "Rating" },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "group_id": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Group Id" }
+        },
+        "type": "object",
+        "title": "ClientUpdate"
+      },
+      "ClientWithStats": {
+        "properties": {
+          "first_name": { "type": "string", "title": "First Name" },
+          "last_name": { "type": "string", "title": "Last Name" },
+          "phone": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Phone" },
+          "email": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Email" },
+          "social_links": {
+            "anyOf": [
+              { "additionalProperties": { "type": "string" }, "type": "object" },
+              { "type": "null" }
+            ],
+            "title": "Social Links"
+          },
+          "car_numbers": {
+            "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+            "title": "Car Numbers"
+          },
+          "photo_url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Photo Url"
+          },
+          "rating": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Rating",
+            "default": 0.0
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "group_id": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Group Id" },
+          "id": { "type": "integer", "title": "Id" },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" },
+          "group": {
+            "anyOf": [{ "$ref": "#/components/schemas/ClientGroup" }, { "type": "null" }]
+          },
+          "visits_count": { "type": "integer", "title": "Visits Count", "default": 0 },
+          "total_spent": { "type": "number", "title": "Total Spent", "default": 0.0 }
+        },
+        "type": "object",
+        "required": ["first_name", "last_name", "id", "created_at"],
+        "title": "ClientWithStats",
+        "description": "Client model with additional statistics"
+      },
+      "CurrentUserResponse": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id", "description": "User ID", "example": 1 },
+          "username": {
+            "type": "string",
+            "title": "Username",
+            "description": "Username",
+            "example": "john_doe"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "User email address",
+            "example": "john@example.com"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "User role (guest, user, staff)",
+            "example": "staff"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "description": "Whether the user account is active",
+            "example": true
+          }
+        },
+        "type": "object",
+        "required": ["id", "username", "email", "role", "is_active"],
+        "title": "CurrentUserResponse",
+        "description": "Response schema for /auth/me endpoint."
+      },
+      "CustomItem": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name",
+            "description": "Name of the custom item/service"
+          },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "price": {
+            "type": "string",
+            "title": "Price",
+            "description": "Price of the custom item"
+          },
+          "is_active": { "type": "boolean", "title": "Is Active", "default": true },
+          "id": { "type": "integer", "title": "Id" },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" }
+        },
+        "type": "object",
+        "required": ["name", "price", "id", "created_at"],
+        "title": "CustomItem"
+      },
+      "CustomItemCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name",
+            "description": "Name of the custom item/service"
+          },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "price": {
+            "anyOf": [{ "type": "number", "minimum": 0.0 }, { "type": "string" }],
+            "title": "Price",
+            "description": "Price of the custom item"
+          },
+          "is_active": { "type": "boolean", "title": "Is Active", "default": true }
+        },
+        "type": "object",
+        "required": ["name", "price"],
+        "title": "CustomItemCreate"
+      },
+      "CustomItemUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }],
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "price": {
+            "anyOf": [
+              { "type": "number", "minimum": 0.0 },
+              { "type": "string" },
+              { "type": "null" }
+            ],
+            "title": "Price"
+          },
+          "is_active": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Is Active"
+          }
+        },
+        "type": "object",
+        "title": "CustomItemUpdate"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InventoryCondition": {
+        "type": "string",
+        "enum": ["ok", "minor", "critical"],
+        "title": "InventoryCondition"
+      },
+      "InventoryItem": {
+        "properties": {
+          "number": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Number",
+            "description": "Unique number/identifier for the item"
+          },
+          "type_id": {
+            "type": "integer",
+            "title": "Type Id",
+            "description": "ID of the inventory type"
+          },
+          "condition": { "$ref": "#/components/schemas/InventoryCondition", "default": "ok" },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "id": { "type": "integer", "title": "Id" },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" }
+        },
+        "type": "object",
+        "required": ["number", "type_id", "id", "created_at"],
+        "title": "InventoryItem"
+      },
+      "InventoryItemCreate": {
+        "properties": {
+          "number": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Number",
+            "description": "Unique number/identifier for the item"
+          },
+          "type_id": {
+            "type": "integer",
+            "title": "Type Id",
+            "description": "ID of the inventory type"
+          },
+          "condition": { "$ref": "#/components/schemas/InventoryCondition", "default": "ok" },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" }
+        },
+        "type": "object",
+        "required": ["number", "type_id"],
+        "title": "InventoryItemCreate"
+      },
+      "InventoryItemUpdate": {
+        "properties": {
+          "number": {
+            "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }],
+            "title": "Number"
+          },
+          "type_id": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Type Id" },
+          "condition": {
+            "anyOf": [{ "$ref": "#/components/schemas/InventoryCondition" }, { "type": "null" }]
+          },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" }
+        },
+        "type": "object",
+        "title": "InventoryItemUpdate"
+      },
+      "InventoryItemWithType": {
+        "properties": {
+          "number": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Number",
+            "description": "Unique number/identifier for the item"
+          },
+          "type_id": {
+            "type": "integer",
+            "title": "Type Id",
+            "description": "ID of the inventory type"
+          },
+          "condition": { "$ref": "#/components/schemas/InventoryCondition", "default": "ok" },
+          "comments": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Comments" },
+          "id": { "type": "integer", "title": "Id" },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" },
+          "type": {
+            "anyOf": [{ "$ref": "#/components/schemas/InventoryType" }, { "type": "null" }]
+          }
+        },
+        "type": "object",
+        "required": ["number", "type_id", "id", "created_at"],
+        "title": "InventoryItemWithType",
+        "description": "Inventory item with type details"
+      },
+      "InventoryType": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name",
+            "description": "Name of the inventory type"
+          },
+          "is_active": { "type": "boolean", "title": "Is Active", "default": true },
+          "id": { "type": "integer", "title": "Id" },
+          "created_at": { "type": "string", "format": "date-time", "title": "Created At" }
+        },
+        "type": "object",
+        "required": ["name", "id", "created_at"],
+        "title": "InventoryType"
+      },
+      "InventoryTypeCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Name",
+            "description": "Name of the inventory type"
+          },
+          "is_active": { "type": "boolean", "title": "Is Active", "default": true }
+        },
+        "type": "object",
+        "required": ["name"],
+        "title": "InventoryTypeCreate"
+      },
+      "InventoryTypeUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }],
+            "title": "Name"
+          },
+          "is_active": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Is Active"
+          }
+        },
+        "type": "object",
+        "title": "InventoryTypeUpdate"
+      },
+      "LoginRequest": {
+        "properties": {
+          "username": { "type": "string", "title": "Username" },
+          "password": { "type": "string", "title": "Password" }
+        },
+        "type": "object",
+        "required": ["username", "password"],
+        "title": "LoginRequest"
+      },
+      "MessageResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Success message describing the completed operation",
+            "example": "Resource deleted successfully"
+          }
+        },
+        "type": "object",
+        "required": ["message"],
+        "title": "MessageResponse",
+        "description": "Standard response for operations that return a success message."
+      },
+      "PaymentStatus": {
+        "type": "string",
+        "enum": ["not_paid", "partial", "paid"],
+        "title": "PaymentStatus"
+      },
+      "Token": {
+        "properties": {
+          "access_token": { "type": "string", "title": "Access Token" },
+          "token_type": { "type": "string", "title": "Token Type" }
+        },
+        "type": "object",
+        "required": ["access_token", "token_type"],
+        "title": "Token"
+      },
+      "UserCreate": {
+        "properties": {
+          "username": { "type": "string", "title": "Username" },
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "role": { "$ref": "#/components/schemas/UserRole", "default": "viewer" },
+          "is_active": { "type": "boolean", "title": "Is Active", "default": true },
+          "password": { "type": "string", "title": "Password" }
+        },
+        "type": "object",
+        "required": ["username", "email", "password"],
+        "title": "UserCreate"
+      },
+      "UserRegistrationResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Registration success message",
+            "example": "User created successfully"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id",
+            "description": "ID of the newly created user",
+            "example": 123
+          }
+        },
+        "type": "object",
+        "required": ["message", "user_id"],
+        "title": "UserRegistrationResponse",
+        "description": "Response schema for user registration endpoint."
+      },
+      "UserRole": { "type": "string", "enum": ["staff", "viewer"], "title": "UserRole" },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": { "HTTPBearer": { "type": "http", "scheme": "bearer" } }
+  }
+}
